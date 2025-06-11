@@ -5,6 +5,8 @@ import BasketRouter from './router/basketRouter.js'
 import { configDotenv } from 'dotenv'
 import { connectDB } from './config/config.js'
 import WishlistRouter from './router/wishlistRouter.js'
+import CharmsRouter from './router/charmsRouter.js'
+import CategoryRouter from './router/categoryRouter.js'
 
 
 configDotenv()
@@ -17,6 +19,8 @@ connectDB()
 app.use('/products',ProductRouter)
 app.use('/basket',BasketRouter)
 app.use('/wishlist',WishlistRouter)
+app.use('/charms', CharmsRouter)
+app.use('/category',CategoryRouter)
 
 app.listen(5000,()=>{
     console.log('backend ishleyr');
