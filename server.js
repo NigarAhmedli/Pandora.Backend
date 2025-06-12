@@ -7,6 +7,10 @@ import { connectDB } from './config/config.js'
 import WishlistRouter from './router/wishlistRouter.js'
 import CharmsRouter from './router/charmsRouter.js'
 import CategoryRouter from './router/categoryRouter.js'
+import BraceletRouter from './router/braceletRouter.js'
+import NecklacesRouter from './router/necklacesRouter.js'
+import RingsRouter from './router/ringsRouter.js'
+import CollectionRouter from './router/collectionRouter.js'
 
 
 configDotenv()
@@ -21,6 +25,10 @@ app.use('/basket',BasketRouter)
 app.use('/wishlist',WishlistRouter)
 app.use('/charms', CharmsRouter)
 app.use('/category',CategoryRouter)
+app.use('/bracelet', BraceletRouter)
+app.use('/necklaces', NecklacesRouter)
+app.use('/rings', RingsRouter)
+app.use('/collection',CollectionRouter)
 
 app.listen(5000,()=>{
     console.log('backend ishleyr');
