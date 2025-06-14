@@ -11,25 +11,32 @@ import BraceletRouter from './router/braceletRouter.js'
 import NecklacesRouter from './router/necklacesRouter.js'
 import RingsRouter from './router/ringsRouter.js'
 import CollectionRouter from './router/collectionRouter.js'
-
+import UserRoutes from './router/userRoutes.js'
+import cookieParser from 'cookie-parser'
 
 configDotenv()
-const app=express()
+const app = express()
+
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cors('*'))
+app.use(express.urlencoded({ extended: true }))
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}))
+app.use(cookieParser())
 connectDB()
 
-app.use('/products',ProductRouter)
-app.use('/basket',BasketRouter)
-app.use('/wishlist',WishlistRouter)
+app.use('/products', ProductRouter)
+app.use('/basket', BasketRouter)
+app.use('/wishlist', WishlistRouter)
 app.use('/charms', CharmsRouter)
-app.use('/category',CategoryRouter)
+app.use('/category', CategoryRouter)
 app.use('/bracelet', BraceletRouter)
 app.use('/necklaces', NecklacesRouter)
 app.use('/rings', RingsRouter)
-app.use('/collection',CollectionRouter)
+app.use('/collection', CollectionRouter)
+app.use('/api/users', UserRoutes)
 
-app.listen(5000,()=>{
-    console.log('backend ishleyr');
+app.listen(5000, () => {
+  console.log('backend ishleyr');
 })

@@ -17,5 +17,13 @@ const deleteBasket=async(req,res)=>{
     await basketModel.findByIdAndDelete(id)
     res.json('delete')
 }
+const updateBasket = async (req, res) => {
+  const { id } = req.params;
+  const updatedItem = await basketModel.findByIdAndUpdate(id, req.body, { new: true });
+  res.json(updatedItem); // 🔁 Yenilənmiş məlumatı geri göndərir
+};
 
-export {getBasket,postBasket,deleteBasket}
+
+
+
+export {getBasket,postBasket,deleteBasket,updateBasket}

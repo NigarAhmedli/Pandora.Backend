@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 
 export const connectDB=async(req,res)=>{
     const connect=await mongoose.connect(process.env.mongodb_url)
+    console.log(connect.connection.host);
+    
 }
 
 // ngrahmdl777
