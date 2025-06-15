@@ -1,5 +1,17 @@
 import productModel from "../models/productModels.js"
 
+export const getProductById = async (req, res) => {
+  try {
+    const product = await productModel.findById(req.params.id); // ✅ düzəliş edildi
+    if (!product) {
+      return res.status(404).json({ message: "Məhsul tapılmadı" });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Xəta baş verdi", error });
+  }
+};
+
 
 
 const getProducts=async(req,res)=>{

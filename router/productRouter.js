@@ -1,4 +1,4 @@
-import { deleteProducts, getProducts, postProducts } from "../controllers/productController.js"
+import { deleteProducts, getProductById, getProducts, postProducts } from "../controllers/productController.js"
 import express from 'express'
 
 
@@ -8,6 +8,6 @@ router.route('/')
 .post(postProducts)
 
 router.route('/:id')
-
+.get(getProductById) 
 .delete(deleteProducts)
 export default router
