@@ -1,5 +1,5 @@
 import express from 'express'
-import { deleteCollection, getCollection, postCollection } from '../controllers/collectionController.js'
+import { deleteCollection, getCollection, getCollectionById, postCollection } from '../controllers/collectionController.js'
 
 
 const router=express.Router()
@@ -8,6 +8,6 @@ router.route('/')
 .post(postCollection)
 
 router.route('/:id')
-
+.get(getCollectionById)
 .delete(deleteCollection)
 export default router

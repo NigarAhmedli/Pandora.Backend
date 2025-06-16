@@ -1,6 +1,17 @@
 import collectionModel from "../models/collectionModels.js"
 
-
+const getCollectionById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const collection = await collectionModel.findById(id);
+    if (!collection) {
+      return res.status(404).json({ message: 'Məhsul tapılmadı' });
+    }
+    res.json(collection);
+  } catch (error) {
+    res.status(500).json({ message: 'Server xətası' });
+  }
+};
 
 
 const getCollection=async(req,res)=>{
@@ -18,4 +29,4 @@ const deleteCollection=async(req,res)=>{
     res.json('delete')
 }
 
-export {getCollection,postCollection,deleteCollection}
+export {getCollection,postCollection,deleteCollection,getCollectionById}

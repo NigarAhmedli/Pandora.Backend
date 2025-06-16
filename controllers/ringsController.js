@@ -1,5 +1,17 @@
 import ringsModel from "../models/ringsModel.js"
 
+const getSingleRing = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const ring = await ringsModel.findById(id);
+    if (!ring) {
+      return res.status(404).json({ message: "Ring tapılmadı" });
+    }
+    res.json(ring);
+  } catch (error) {
+    res.status(500).json({ message: "Xəta baş verdi" });
+  }
+};
 
 
 
@@ -18,4 +30,4 @@ const deleteRings=async(req,res)=>{
     res.json('delete')
 }
 
-export {getRings,postRings,deleteRings}
+export {getRings,postRings,deleteRings,getSingleRing}

@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 export const productSchema=mongoose.Schema({
     image:{type:String},
     title:{type:String},
-    price:{type:String}
+    price:{type:String},
+    description: { type: String },
 },{timestamps:true})
 
 const productModel=mongoose.model('products',productSchema)

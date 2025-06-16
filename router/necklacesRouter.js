@@ -1,6 +1,6 @@
 
 import express from 'express'
-import { deleteNecklaces, getNecklaces, postNecklaces } from '../controllers/necklacesController.js'
+import { deleteNecklaces, getNecklaceById, getNecklaces, postNecklaces } from '../controllers/necklacesController.js'
 
 
 const router=express.Router()
@@ -9,6 +9,6 @@ router.route('/')
 .post(postNecklaces)
 
 router.route('/:id')
-
+.get(getNecklaceById) 
 .delete(deleteNecklaces)
 export default router

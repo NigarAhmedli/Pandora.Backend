@@ -1,5 +1,16 @@
 import necklacesModel from "../models/necklacesModel.js"
 
+const getNecklaceById = async (req, res) => {
+  try {
+    const necklace = await necklacesModel.findById(req.params.id);
+    if (!necklace) {
+      return res.status(404).json({ message: "Boyunbağı tapılmadı" });
+    }
+    res.json(necklace);
+  } catch (error) {
+    res.status(500).json({ message: "Xəta baş verdi", error });
+  }
+};
 
 
 
@@ -18,4 +29,4 @@ const deleteNecklaces=async(req,res)=>{
     res.json('delete')
 }
 
-export {getNecklaces,postNecklaces,deleteNecklaces}
+export {getNecklaces,postNecklaces,deleteNecklaces,getNecklaceById}

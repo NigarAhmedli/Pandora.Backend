@@ -1,5 +1,16 @@
 import braceletModel from "../models/braceletModel.js"
 
+const getBraceletById = async (req, res) => {
+  try {
+    const bracelet = await braceletModel.findById(req.params.id);
+    if (!bracelet) {
+      return res.status(404).json({ message: "Məhsul tapılmadı" });
+    }
+    res.json(bracelet);
+  } catch (error) {
+    res.status(500).json({ message: "Xəta baş verdi", error });
+  }
+};
 
 
 
@@ -18,4 +29,4 @@ const deleteBracelet=async(req,res)=>{
     res.json('delete')
 }
 
-export {getBracelet,postBracelet,deleteBracelet}
+export {getBracelet,postBracelet,deleteBracelet,getBraceletById}
