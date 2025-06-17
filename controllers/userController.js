@@ -1,21 +1,33 @@
 import UserModel from "../models/userModel.js"
 import { generateToken } from "../utils/generateToken.js";
 
-const createUser=async(req,res)=>{
-    const {name,email,password}=req.body
-    const user=await UserModel.findOne({email})
 
-if (user) {
-    res.json('User artiq var')
-}
-await UserModel.create({
-    name:req.body.name,
-    email:req.body.email,
-    password:req.body.password
-})
 
-res.json('user created');
+const createUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  console.log("Yeni qeydiyyat sorğusu gəldi:", req.body);
+
+  // 1. Əgər istifadəçi varsa, xətanı qaytar
+  const userExists = await UserModel.findOne({ email });
+
+  if (userExists) {
+    return res.status(400).json({ message: 'İstifadəçi artıq mövcuddur' });
+  }
+
+  // 2. Yeni istifadəçini yarat
+  const newUser = await UserModel.create({ name, email, password });
+
+  // 3. Token cookie-yə yaz 
+  generateToken(res, newUser._id);
+
+  // 4. İstifadəçi məlumatını frontend-ə qaytar
+  res.status(201).json({
+    _id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+  });
 };
+
 
 const authUser=async(req,res)=>{
     const {email,password} =req.body
