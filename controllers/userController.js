@@ -29,19 +29,27 @@ const createUser = async (req, res) => {
 };
 
 
-const authUser=async(req,res)=>{
-    const {email,password} =req.body
-    
-    const user=await UserModel.findOne({email})
+const authUser = async (req, res) => {
+  const { email, password } = req.body;
 
-if (user && await user.passwordControl(password)) {
-    generateToken(res, user._id)
-    res.json('logged in')
-}else{
-    res.json('email ve ya parol sehvdir')
-}
+  const user = await UserModel.findOne({ email });
 
-}
+  if (user && await user.passwordControl(password)) {
+    generateToken(res, user._id);
+
+    // ✅ User məlumatlarını cavabla
+    return res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || "",
+      avatar: user.avatar || ""
+    });
+  } else {
+    return res.status(401).json({ message: 'Email və ya parol səhvdir' });
+  }
+};
+
 
 const logoutUser=async(req,res)=>{
     res.cookie('jwt','', {
@@ -51,17 +59,66 @@ const logoutUser=async(req,res)=>{
     res.json('logged out')
 }
 
-const getUser=async (req,res)=>{
-    if (req.user) {
-        res.json({
-            name:req.user.name,
-            email:req.user.email,
-        })
+const getUser = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id); // Bütün məlumatları DB-dən götür
+
+    if (user) {
+      return res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone || "",
+        avatar: user.avatar || "",
+      });
+    } else {
+      return res.status(404).json({ message: 'İstifadəçi tapılmadı' });
     }
+  } catch (error) {
+    return res.status(500).json({ message: 'Serverdə xəta baş verdi' });
+  }
+};
 
-    res.json('unauth')
-
-}
 
 
-export {createUser,authUser,logoutUser,getUser };
+
+
+
+
+const updateUserData = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id);
+
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.phone = req.body.phone || user.phone;
+
+      if (req.file) {
+        user.avatar = `/uploads/${req.file.filename}`;
+      }
+
+      const updatedUser = await user.save();
+
+      // 🔥 Ən vacib hissə: mütləq bütün sahələri qaytar
+      return res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        avatar: updatedUser.avatar,
+      });
+    } else {
+      return res.status(404).json({ message: 'İstifadəçi tapılmadı' });
+    }
+  } catch (error) {
+    console.error("Update error:", error.message);
+    return res.status(500).json({ message: 'Serverdə xəta baş verdi', error: error.message });
+  }
+};
+
+
+
+
+
+export {createUser,authUser,logoutUser,getUser,updateUserData };
