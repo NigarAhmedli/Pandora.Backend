@@ -3,13 +3,15 @@ import bcrypt from "bcryptjs";
 
 
 
-const userSchema=mongoose.Schema({
-    name:{type:String, required:true},
-    email:{type:String, required:true,unique:true },
-    password:{type:String, required:true},
-    phone: { type: String }, 
-    avatar: { type: String },
-},{timestamps:true})
+const userSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  phone: { type: String },
+  avatar: { type: String },
+  role: { type: String, default: 'user' } 
+}, { timestamps: true });
+
 
 userSchema.pre('save',async function (next) {
     const salt=await bcrypt.genSalt(12)

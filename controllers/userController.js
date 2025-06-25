@@ -43,7 +43,8 @@ const authUser = async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone || "",
-      avatar: user.avatar || ""
+      avatar: user.avatar || "",
+       role: user.role || "user",
     });
   } else {
     return res.status(401).json({ message: 'Email və ya parol səhvdir' });
@@ -70,6 +71,7 @@ const getUser = async (req, res) => {
         email: user.email,
         phone: user.phone || "",
         avatar: user.avatar || "",
+         role: user.role || "user" 
       });
     } else {
       return res.status(404).json({ message: 'İstifadəçi tapılmadı' });
