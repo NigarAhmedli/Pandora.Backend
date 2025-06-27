@@ -2,7 +2,7 @@ import productModel from "../models/productModels.js"
 
 export const getProductById = async (req, res) => {
   try {
-    const product = await productModel.findById(req.params.id); // ✅ düzəliş edildi
+    const product = await productModel.findById(req.params.id); 
     if (!product) {
       return res.status(404).json({ message: "Məhsul tapılmadı" });
     }

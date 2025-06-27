@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema(
 // ✅ Parol yalnız dəyişəndə hash olunsun!
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    return next(); // Parol dəyişməyibsə, heç nə etmə
+    return next(); 
   }
 
   const salt = await bcrypt.genSalt(12);

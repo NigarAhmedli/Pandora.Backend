@@ -8,7 +8,7 @@ const getBasket = async (req, res) => {
 const postBasket = async (req, res) => {
   const newBasket = {
     ...req.body,
-    quantity: req.body.quantity || 1  // 👈 quantity göndərilməyibsə, default 1
+    quantity: req.body.quantity || 1 
   };
 
   const createdItem = await basketModel.create(newBasket);
