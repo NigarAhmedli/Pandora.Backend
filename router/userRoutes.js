@@ -1,5 +1,5 @@
 import express from "express"
-import { authUser, createUser, getUser, logoutUser, updateUserData } from "../controllers/userController.js"
+import { authUser, createUser, getAllUsers, getUser, getUserStats, logoutUser, updateUserData, updateUserRole } from "../controllers/userController.js"
 import userControl from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -23,7 +23,11 @@ router
 router
 .route('/getuser')
 .get(userControl, getUser);
+router.get('/all',  getAllUsers);
 
+router.put("/role",  updateUserRole);
+
+router.get('/stats/users', userControl, getUserStats);
 
 
 

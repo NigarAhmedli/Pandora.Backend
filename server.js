@@ -18,6 +18,7 @@ import { fileURLToPath } from 'url';
 import PaymentRouter from './router/paymentRouter.js';
 
 
+
 configDotenv()
 const app = express()
 
@@ -45,7 +46,8 @@ app.use('/necklaces', NecklacesRouter)
 app.use('/rings', RingsRouter)
 app.use('/collection', CollectionRouter)
 app.use('/api/users', UserRoutes)
-app.use('/api/payment', PaymentRouter);
+app.use('/api/payment', PaymentRouter); 
+
 
 app.listen(5000, () => {
   console.log('backend ishleyr');

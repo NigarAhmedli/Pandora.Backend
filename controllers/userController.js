@@ -21,11 +21,15 @@ const createUser = async (req, res) => {
   generateToken(res, newUser._id);
 
   // 4. İstifadəçi məlumatını frontend-ə qaytar
-  res.status(201).json({
-    _id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
-  });
+ res.status(201).json({
+  _id: newUser._id,
+  name: newUser.name,
+  email: newUser.email,
+  phone: newUser.phone || "",
+  avatar: newUser.avatar || "",
+  role: newUser.role || "user",
+});
+;
 };
 
 
@@ -102,7 +106,6 @@ const updateUserData = async (req, res) => {
 
       const updatedUser = await user.save();
 
-      // 🔥 Ən vacib hissə: mütləq bütün sahələri qaytar
       return res.status(200).json({
         _id: updatedUser._id,
         name: updatedUser.name,
@@ -118,9 +121,62 @@ const updateUserData = async (req, res) => {
     return res.status(500).json({ message: 'Serverdə xəta baş verdi', error: error.message });
   }
 };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find(); // bütün istifadəçiləri götür
+
+    const filteredUsers = users.map(user => ({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || "",
+      avatar: user.avatar || "",
+      role: user.role || "user",
+    }));
+
+    res.json(filteredUsers); // sadələşdirilmiş məlumatları qaytar
+  } catch (error) {
+    console.error("getAllUsers xətası:", error.message);
+    res.status(500).json({ message: "İstifadəçilər alınarkən xəta baş verdi" });
+  }
+};
+
+const updateUserRole = async (req, res) => {
+  try {
+    const { id, role } = req.body;
+
+    const user = await UserModel.findById(id);
+    if (!user) return res.status(404).json({ message: "İstifadəçi tapılmadı" });
+
+    user.role = role;
+    await user.save();
+
+    res.json({ message: "Rol yeniləndi", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server xətası", error: error.message });
+  }
+};
+
+ const getUserStats = async (req, res) => {
+  try {
+    const stats = await UserModel.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+          total: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+    res.json(stats.map(s => ({ month: s._id, count: s.total })));
+  } catch (err) {
+    console.error("getUserStats:", err);
+    res.status(500).json({ message: "Stats alınamadı", error: err.message });
+  }
+};
 
 
 
 
 
-export {createUser,authUser,logoutUser,getUser,updateUserData };
+export {createUser,authUser,logoutUser,getUser,updateUserData , getAllUsers, updateUserRole, getUserStats};
